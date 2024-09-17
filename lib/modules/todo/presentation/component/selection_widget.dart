@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/helpers/utils.dart';
 
 import '../../../../core/services/enums.dart';
 import '../../../../helpers/custom_colors.dart';
@@ -26,7 +27,7 @@ class SelectionRow extends StatelessWidget {
                   : CustomColors.lighterPrimaryColor,
             ),
             child: Text(
-              statusStr.toUpperCase(),
+              statusStr.capitalized,
               style: TextStyle(
                 color: HomeProvider.of(context).selectedStatus == statusStr
                     ? Colors.white

@@ -6,6 +6,7 @@ import 'package:todo_app/core/services/enums.dart';
 import 'package:todo_app/helpers/app_image_paths.dart';
 import 'package:todo_app/helpers/custom_colors.dart';
 import 'package:todo_app/helpers/size_extension.dart';
+import 'package:todo_app/helpers/utils.dart';
 import 'package:todo_app/modules/todo/domain/entities/todo.dart';
 import 'package:todo_app/modules/todo/presentation/provider/home_provider.dart';
 import 'package:todo_app/widgets/app_size_boxes.dart';
@@ -150,7 +151,7 @@ class _AddTodoViewState extends State<AddTodoView> {
               isPriority: true,
               items: Priority.values,
               selectedValue: HomeProvider.of(context).selectedPriority,
-              displayItem: (priority) => priority.name,
+              displayItem: (priority) => priority.name.capitalized,
               hint: "Choose Priority",
               validator: (value) =>
                   value == null ? "The Priority is required." : null,
@@ -161,7 +162,7 @@ class _AddTodoViewState extends State<AddTodoView> {
             16.heightBox,
             if (widget.todoDetails != null)
               Text(
-                "Priority",
+                "Status",
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                     color: CustomColors.subTitleColor, fontSize: 12, height: 5),
               ),
@@ -170,8 +171,8 @@ class _AddTodoViewState extends State<AddTodoView> {
                 isPriority: false,
                 items: StatusTodo.values,
                 selectedValue: HomeProvider.of(context).selectedTodoStatus,
-                displayItem: (priority) => priority.name,
-                hint: "Choose Priority",
+                displayItem: (priority) => priority.name.capitalized,
+                hint: "Choose Status",
                 validator: (value) =>
                     value == null ? "The Status is required." : null,
                 onChanged: (newValue) {

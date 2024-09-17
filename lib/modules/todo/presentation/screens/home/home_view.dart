@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/helpers/app_image_paths.dart';
@@ -27,16 +29,24 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
-    _scrollController = ScrollController();
-    _scrollController.addListener(_onScroll);
-    HomeProvider.of(context, isListen: false).getTodos();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController = ScrollController();
+      _scrollController.addListener(_onScroll);
+      HomeProvider.of(context, isListen: false).getTodos();
+    });
+
     super.initState();
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        _scrollController.removeListener(_onScroll);
+        _scrollController.dispose();
+      },
+    );
+
     super.dispose();
   }
 
@@ -141,13 +151,14 @@ class _HomeViewState extends State<HomeView> {
                 },
               ),
             ),
-            Align(
-              alignment: AlignmentDirectional.topEnd,
-              child: InkWell(
-                onTap: () => pushView(context, QrCodeScanner()),
-                child: Image.asset(AppImages.qrcode),
+            if (Platform.isAndroid || Platform.isIOS)
+              Align(
+                alignment: AlignmentDirectional.topEnd,
+                child: InkWell(
+                  onTap: () => pushView(context, QrCodeScanner()),
+                  child: Image.asset(AppImages.qrcode),
+                ),
               ),
-            ),
             50.heightBox,
           ],
         ),
